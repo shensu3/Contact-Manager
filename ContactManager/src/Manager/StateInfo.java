@@ -43,6 +43,8 @@ public class StateInfo {
 		ContactInterface.text_zip.setText(ContactInterface.contacts.get(ContactInterface.position).ZipCode);
 		ContactInterface.text_phnum.setText(ContactInterface.contacts.get(ContactInterface.position).PhoneNumber);
 		ContactInterface.text_gender.setText(ContactInterface.contacts.get(ContactInterface.position).Gender);
+		ContactInterface.text_country.setText(ContactInterface.contacts.get(ContactInterface.position).Country);
+		ContactInterface.text_email.setText(ContactInterface.contacts.get(ContactInterface.position).Email);
 		}
 	}
 	/*Funtion clears up all the text fields. */
@@ -59,5 +61,7 @@ public class StateInfo {
 		ContactInterface.text_zip.setText("");
 		ContactInterface.text_phnum.setText("");
 		ContactInterface.text_gender.setText("");
+		ContactInterface.text_country.setText("");
+		ContactInterface.text_email.setText("");
 	}
 }

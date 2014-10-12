@@ -6,6 +6,8 @@
 
 package Manager;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,7 +29,7 @@ public static void init()
 		//Read each line from the file and add those fields into a new row in "contacts" Array List.
 		while ((line = reader.readLine()) != null) {
 			String temp[]=line.split("-");
-			ContactInterface.contacts.add(new Data(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8],temp[9]));
+			ContactInterface.contacts.add(new Data(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8],temp[9],temp[10],temp[11]));
 		}
 		reader.close();
 	}
@@ -46,10 +48,29 @@ public static boolean validate()
 	  ContactInterface.text_state.getText().equals("") ||
 	  ContactInterface.text_zip.getText().equals("") ||
 	  ContactInterface.text_phnum.getText().equals("") ||
-	  ContactInterface.text_gender.getText().equals(""))
+	  ContactInterface.text_gender.getText().equals("") ||
+	  ContactInterface.text_country.getText().equals("") ||
+	  ContactInterface.text_email.getText().equals(""))
 	return false;
-	  else
-    return true;
+	  //now check if input is of valid type.  
+	  else            
+	  {
+			 if(
+		     ContactInterface.text_fname.getText().matches("[a-zA-Z]*")      &&
+		     ContactInterface.text_midname.getText().matches("[a-zA-Z]")     &&
+			 ContactInterface.text_lname.getText().matches("[a-zA-Z]*")      &&
+			 ContactInterface.text_city.getText().matches("[a-zA-Z]*")       &&
+			 ContactInterface.text_state.getText().matches("[a-zA-Z]*")      &&
+			 ContactInterface.text_zip.getText().matches("[0-9]*")           &&
+			 ContactInterface.text_phnum.getText().matches("[0-9]*")         &&
+			 ContactInterface.text_gender.getText().matches("m|f|M|F")       &&
+			 ContactInterface.text_country.getText().matches("[a-zA-Z]*")    &&
+			 ContactInterface.text_email.getText().contains("@")             &&
+			 ContactInterface.text_email.getText().contains("."))
+		      return true;
+		  else
+			  return false;
+	  }
 }
 //Funtion checks if a new record being added already exists.
 public static boolean check()
@@ -74,7 +95,8 @@ public static void updateFile()
 					ContactInterface.contacts.get(i).LastName+"-"+ContactInterface.contacts.get(i).AddressLine1+"-"+
 					ContactInterface.contacts.get(i).AddressLine2+"-"+ContactInterface.contacts.get(i).City+"-"+
 					ContactInterface.contacts.get(i).State+"-"+ContactInterface.contacts.get(i).ZipCode+"-"+
-					ContactInterface.contacts.get(i).PhoneNumber+"-"+ContactInterface.contacts.get(i).Gender+"-");	
+					ContactInterface.contacts.get(i).PhoneNumber+"-"+ContactInterface.contacts.get(i).Gender+"-"+
+					ContactInterface.contacts.get(i).Country+"-"+ContactInterface.contacts.get(i).Email+"-");	
 	    	out.newLine();
 		}
 		out.close();
@@ -92,16 +114,19 @@ public static void store()
 								  ContactInterface.text_lname.getText(),ContactInterface.text_addr1.getText(),
 								  ContactInterface.text_addr2.getText(),ContactInterface.text_city.getText(),
 								  ContactInterface.text_state.getText(),ContactInterface.text_zip.getText(),
-								  ContactInterface.text_phnum.getText(),ContactInterface.text_gender.getText()));
+								  ContactInterface.text_phnum.getText(),ContactInterface.text_gender.getText(),
+								  ContactInterface.text_country.getText(),ContactInterface.text_email.getText()));
 	StateInfo.Array_Table();	//call array table to refresh table
 	updateFile();				//write the updates back into file
+	ContactInterface.textField.setForeground(Color.green);
 	ContactInterface.textField.setText("Successfully stored !");	//status update in jtext box for user knowledge
 	StateInfo.clear();	//clear up all text fields.
 	}
 	else
 	{
+		ContactInterface.textField.setForeground(Color.red);
 		if(validate()==false)
-			ContactInterface.textField.setText("A required Field hasn't been filled."); //status info for user.
+			ContactInterface.textField.setText("A required Field is empty or invalid data"); //status info for user.
 		if(check()==false)
 			ContactInterface.textField.setText("Possible duplicate record"); //status info for the user.
 	}
@@ -114,6 +139,7 @@ public static void delete()
 		ContactInterface.contacts.remove(ContactInterface.position); //remove from contacts arraylist
 		StateInfo.Array_Table(); //refresh table
 		updateFile(); //write change to file
+		ContactInterface.textField.setForeground(Color.green);
 		ContactInterface.textField.setText("Successfully deleted !"); //status update
 	}
 	return;
@@ -136,15 +162,19 @@ public static void modify()
 		ContactInterface.contacts.get(ContactInterface.position).ZipCode=ContactInterface.text_zip.getText();
 		ContactInterface.contacts.get(ContactInterface.position).PhoneNumber=ContactInterface.text_phnum.getText();
 		ContactInterface.contacts.get(ContactInterface.position).Gender=ContactInterface.text_gender.getText();
-		StateInfo.Array_Table(); //refresh table
-		updateFile(); //write back the arraylist changes into the file
-		StateInfo.clear(); //clear all text fields
-		ContactInterface.textField.setText("Successfully Modified !"); //success status update
+		ContactInterface.contacts.get(ContactInterface.position).Country=ContactInterface.text_country.getText();
+		ContactInterface.contacts.get(ContactInterface.position).Email=ContactInterface.text_email.getText();
+		StateInfo.Array_Table(); 										//refresh table
+		updateFile(); 													//write back the arraylist changes into the file
+		StateInfo.clear(); 												//clear all text fields
+		ContactInterface.textField.setForeground(Color.green);
+		ContactInterface.textField.setText("Successfully Modified !"); 	//success status update
 		}
 	}
 	else
 	{
-		ContactInterface.textField.setText("A required Field hasn't been filled."); //failure to modify status update 
+		ContactInterface.textField.setForeground(Color.red);
+		ContactInterface.textField.setText("A required Field is empty or invalid data"); //failure to modify status update 
 	}
 }
 

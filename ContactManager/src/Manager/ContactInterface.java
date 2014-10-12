@@ -1,7 +1,9 @@
 package Manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.ScrollPane;
 
 import javax.swing.JFrame;
@@ -50,11 +52,13 @@ public class ContactInterface extends JFrame {
 	public static JTextField text_zip;
 	public static JTextField text_phnum;
 	public static JTextField text_gender;
+	public static JTextField text_country;
+	public static JTextField text_email;
 	public static JTable table_1;
 	public static ArrayList<Data> contacts = new ArrayList<Data>(); //contacts arraylist stores all the file data
 	private String[] columnNames = {"Name","Phone Number"}; //column names for the j table 
 	public static DefaultTableModel tableModel; 
-	public static JTextField textField;
+	public static JLabel textField;
 	/**
 	 * Launch the application.
 	 * main function.
@@ -79,14 +83,14 @@ public class ContactInterface extends JFrame {
 		FileIO.init();
 		this.setTitle(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 715, 520);
+		setBounds(100, 100, 715, 600);
 		contentPane=new JPanel();
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.add(contentPane);
 		contentPane.setLayout(null);
-
-		//JTable settings 
+		
 		table_1 = new JTable();
+		table_1.setBounds(109, 421, 486, 126);
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableModel = (DefaultTableModel)table_1.getModel();
 		tableModel.addColumn(columnNames[0]);
@@ -94,7 +98,7 @@ public class ContactInterface extends JFrame {
 		StateInfo.Array_Table();
 		table_1.setModel(tableModel);
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
-		scrollPane_1.setBounds(108, 355, 488, 111);
+		scrollPane_1.setBounds(109, 419, 488, 128);
 		table_1.setFillsViewportHeight(true);
 		contentPane.add(scrollPane_1);
 		//listener function listens to selection and updates row variable and calls fillData()
@@ -107,6 +111,7 @@ public class ContactInterface extends JFrame {
 		            StateInfo.fillData();
 		         }
 			});
+
 		
 		// Text fields with listeners to limit the maximum number of characters -----
 		text_fname = new JTextField(20);
@@ -276,7 +281,7 @@ public class ContactInterface extends JFrame {
 				FileIO.store(); //calls store()
 			}
 		});
-		btnStore.setBounds(105, 278, 89, 23);
+		btnStore.setBounds(105, 326, 89, 23);
 		contentPane.add(btnStore);
 		
 		JButton btnModify = new JButton("Modify");
@@ -285,7 +290,7 @@ public class ContactInterface extends JFrame {
 				FileIO.modify(); // calls modify()
 			}
 		});
-		btnModify.setBounds(242, 278, 89, 23);
+		btnModify.setBounds(242, 326, 89, 23);
 		contentPane.add(btnModify);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -294,21 +299,19 @@ public class ContactInterface extends JFrame {
 				FileIO.delete(); // calls delete()
 			}
 		});
-		btnDelete.setBounds(369, 278, 89, 23);
+		btnDelete.setBounds(369, 326, 89, 23);
 		contentPane.add(btnDelete);
 		
-		textField = new JTextField();
-		textField.setBounds(411, 312, 181, 32);
+		textField = new JLabel();
+		textField.setBounds(303, 385, 294, 23);
 		contentPane.add(textField);
-		textField.setColumns(10);
-		textField.setEditable(false);
 		
 		JLabel lblStatus = new JLabel("Status ");
-		lblStatus.setBounds(355, 327, 46, 14);
+		lblStatus.setBounds(257, 388, 46, 20);
 		contentPane.add(lblStatus);
 		
 		JLabel lblSelectContactTo = new JLabel("Select contact to edit");
-		lblSelectContactTo.setBounds(114, 330, 133, 14);
+		lblSelectContactTo.setBounds(114, 394, 133, 14);
 		contentPane.add(lblSelectContactTo);
 		
 		JButton btnClear = new JButton("Clear");
@@ -317,11 +320,43 @@ public class ContactInterface extends JFrame {
 				StateInfo.clear(); // calls clear()
 			}
 		});
-		btnClear.setBounds(492, 278, 89, 23);
+		btnClear.setBounds(504, 326, 89, 23);
 		contentPane.add(btnClear);
-	
+		
+		JLabel lblCountry = new JLabel("Country*");
+		lblCountry.setBounds(109, 259, 78, 14);
+		contentPane.add(lblCountry);
+		
+		text_country = new JTextField();
+		text_country.setBounds(176, 256, 124, 20);
+		contentPane.add(text_country);
+		text_country.setColumns(10);
+		text_country.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(text_country.getText().length()>=30)
+					text_country.setText(text_country.getText().substring(0,29));
+			}
+		});
+		
+		JLabel lblEmail = new JLabel("Email*");
+		lblEmail.setBounds(355, 259, 46, 14);
+		contentPane.add(lblEmail);
+		
+		text_email = new JTextField();
+		text_email.setBounds(398, 256, 199, 20);
+		contentPane.add(text_email);
+		text_email.setColumns(10);
+		text_email.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(text_email.getText().length()>=100)
+					text_email.setText(text_email.getText().substring(0,99));
+			}
+		});
+		textField.setFont(new Font("helvetica", Font.BOLD, 15));
 		getContentPane().add(scrollPane);
-		this.setResizable(false);
-		this.setMaximumSize(this.getSize());
+		//this.setResizable(false);
+		//this.setMaximumSize(this.getSize());
 	}
 }

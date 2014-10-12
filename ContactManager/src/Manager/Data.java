@@ -16,8 +16,10 @@ public class Data {			//size constraint handled in JFame
 	String ZipCode; 		//(9)
 	String PhoneNumber; 	//(21)
 	String Gender; 			//(1)(Must be M or F)
+	String Country;			//(30)
+	String Email;			//(100)
 /*Constructor to create an object of type data and insert into the "contacts" Array List*/
-public Data(String fname,String MInitial,String lname, String Addr1, String Addr2, String city,String state, String zip, String phnum,String gender)
+public Data(String fname,String MInitial,String lname, String Addr1, String Addr2, String city,String state, String zip, String phnum,String gender,String country,String email)
 	{
 		this.FirstName=fname;
 		this.LastName=lname;
@@ -29,5 +31,7 @@ public Data(String fname,String MInitial,String lname, String Addr1, String Addr
 		this.ZipCode=zip;
 		this.PhoneNumber=phnum;
 		this.Gender=gender;
+		this.Country=country;
+		this.Email=email;
 	}
 }
